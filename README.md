@@ -8,13 +8,38 @@ Eureka Serverは`http://localhost:8761`で起動します。serviceUrlは`http:/
 ## 起動手順
 Eureka Server -> サービス -> クライアントの順に起動します。
 ### Eureka Serverを起動する
-`mvn spring-boot:run -f eureka-server/pom.xml`
-### Eurekaに登録するサービスを起動する
-`mvn package`してWARファイルをアプリケーションサーバなどにデプロイしてください。なおVM引数に`-Deureka.client.props=eureka`をつけてください。
-#### 1つのサービスにつき複数のサーバをEurekaに登録する
-`service/src/main/resources/eureka.properties`の`eureka.port`を変更し、そのポートでTomcatなどサーブレットコンテナを起動してください（改善予定）。
+```
+cd eureka-server
+mvn spring-boot:run -f eureka-server/pom.xml
+```
+`http://localhost:8761/`にアクセスするとSpring Eurekaの画面が表示されます。
+### Eurekaに登録するサービスを複数起動する
+2つ起動できるように設定ファイルを作成しています。
+```
+cd service
+```
+
+#### 1つめ
+`mvn jetty:run -Djetty.http.port=8092 -Deureka.client.props=eureka1`
+#### 2つめ
+`mvn jetty:run -Djetty.http.port=8093 -Deureka.client.props=eureka2`
+#### nつめ
+`service/src/main/resources`に`eureka1.properties`といった設定ファイルを作成しています。これをコピーし`eureka.instanceId`と`eureka.port`を変更してください。指定したポートでJettyを起動します。
+```
+mvn jetty:run -Djetty.http.port=[enrekan.propertiesで設定したポート] -Deureka.client.props=eurekan
+```
+### Eurekaにサービスが登録できているかを確認する
+`http://localhost:8761/`にアクセスすると"Instances currently registered with Eureka"の項目にApplicationとして"EUREKASERVICE"があり、Statusに起動したサービスの数だけinstanceIdが表示されます。
+
 ### Eurekaに登録するクライアントを起動する
-`mvn package`してWARファイルをアプリケーションサーバなどにデプロイしてください。なおVM引数に`-Deureka.client.props=eureka`をつけてください。
+```
+cd client
+mvn jetty:run -Djetty.http.port=8096 -Deureka.client.props=eureka
+```
+#### Eureka、ribbonでサービスを呼び出す
+`http://localhost:8096/`にアクセスすると、画面にjyukutyoと表示されます。
+Eurekaを通じてサービスに/jyukutyoでアクセスします。そのため、ブラウザの画面にはjyukutyoと表示されます。
+複数サービスを起動している場合ribbonがロードバランシングしているので、サーブレットコンテナのアクセスログを見るとそれぞれのコンテナにアクセスが振り分けられていることがわかります。
 
 ## 構造
 サービス、クライアントともSpringの初期化後にEureka Serverに自分を登録しに行きます。
@@ -22,6 +47,3 @@ Eureka Server -> サービス -> クライアントの順に起動します。
 コンテキストルート/pathにアクセスするとそのpathをレスポンスで返すだけのサービスです。
 Eureka Serverにはhttp://example.comというvipAddressで登録しています。
 そのためEurekaを通じてhttp://example.com/aliceというようにアクセスすると、aliceというレスポンスで返ります。
-### クライアント
-コンテキストルート/にアクセスすると、Eurekaを通じてサービスに/jyukutyoでアクセスします。そのため、ブラウザの画面にはjyukutyoと表示されます。
-複数サービスを起動している場合、サーブレットコンテナのアクセスログを見るとそれぞれのコンテナにアクセスが振り分けられていることがわかります。
