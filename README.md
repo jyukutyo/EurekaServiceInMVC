@@ -9,7 +9,6 @@ Eureka Serverは`http://localhost:8761`で起動します。serviceUrlは`http:/
 Eureka Server -> サービス -> クライアントの順に起動します。
 ### Eureka Serverを起動する
 ```
-cd eureka-server
 mvn spring-boot:run -f eureka-server/pom.xml
 ```
 `http://localhost:8761/`にアクセスするとSpring Eurekaの画面が表示されます。
@@ -45,5 +44,5 @@ Eurekaを通じてサービスに/jyukutyoでアクセスします。そのた�
 サービス、クライアントともSpringの初期化後にEureka Serverに自分を登録しに行きます。
 ### サービス
 コンテキストルート/pathにアクセスするとそのpathをレスポンスで返すだけのサービスです。
-Eureka Serverにはhttp://example.comというvipAddressで登録しています。
-そのためEurekaを通じてhttp://example.com/aliceというようにアクセスすると、aliceというレスポンスで返ります。
+Eureka Serverには`http://example.com`というvipAddressで登録しています。
+そのためEurekaを通じて`http://example.com/alice`というようにアクセスすると、aliceというレスポンスで返ります。

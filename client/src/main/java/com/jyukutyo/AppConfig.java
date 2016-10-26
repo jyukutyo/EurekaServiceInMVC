@@ -13,14 +13,17 @@ import com.netflix.config.DynamicPropertyFactory;
 import com.netflix.discovery.DefaultEurekaClientConfig;
 import com.netflix.discovery.DiscoveryClient;
 import com.netflix.discovery.EurekaClient;
+import com.netflix.hystrix.contrib.javanica.aop.aspectj.HystrixCommandAspect;
 import com.netflix.ribbon.transport.netty.RibbonTransport;
 import com.netflix.ribbon.transport.netty.http.LoadBalancingHttpClient;
 import io.netty.buffer.ByteBuf;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
+@EnableAspectJAutoProxy
 @ComponentScan(basePackages = "com.jyukutyo")
 @EnableWebMvc
 @Configuration
@@ -50,6 +53,11 @@ public class AppConfig {
         IClientConfig clientConfig = IClientConfig.Builder.newBuilder("sample-client").build();
         LoadBalancingHttpClient<ByteBuf, ByteBuf> ribbonClient = RibbonTransport.newHttpClient(clientConfig);
         return ribbonClient;
+    }
+
+    @Bean
+    public HystrixCommandAspect hystrixCommandAspect() {
+        return new HystrixCommandAspect();
     }
 
 }
