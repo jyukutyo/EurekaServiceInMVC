@@ -3,6 +3,7 @@ package com.jyukutyo;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletRegistration;
 
+import com.netflix.hystrix.contrib.metrics.eventstream.HystrixMetricsStreamServlet;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
@@ -22,6 +23,10 @@ public class MyWebApplicationInitializer implements WebApplicationInitializer {
                 container.addServlet("dispatcher", new DispatcherServlet(dispatcherContext));
         dispatcher.setLoadOnStartup(1);
         dispatcher.addMapping("/*");
+
+        ServletRegistration.Dynamic hystrix =
+                container.addServlet("hystrix", new HystrixMetricsStreamServlet());
+        hystrix.addMapping("/hystrix.stream");
 
     }
 
