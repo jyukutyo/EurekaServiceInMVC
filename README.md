@@ -45,4 +45,15 @@ Eurekaを通じてサービスに/jyukutyoでアクセスします。そのた�
 ### サービス
 コンテキストルート/pathにアクセスするとそのpathをレスポンスで返すだけのサービスです。
 Eureka Serverには`http://example.com`というvipAddressで登録しています。
-そのためEurekaを通じて`http://example.com/alice`というようにアクセスすると、aliceというレスポンスで返ります。
+そのためEurekaを通じてサービスに`http://example.com/alice`というようにアクセスすると、aliceというレスポンスで返ります。
+
+### Hysrixダッシュボードでモニタリングする
+```
+cd hystrix-dashboard
+mvn install
+java -jar target/hystrix-dashboard-0.0.1.BUILD-SNAPSHOT.jar
+```
+
+#### ダッシュボードを見る
+`http://localhost:7979/`にアクセスする。テキストボックスに`http://localhost:8096/hystrix.stream`と入力し、minitor streamボタンを押す。
+クライアントにアクセス`http://localhost:8096`があるたびに、サービスのメソッドコール数などがダッシュボートに表示される。
