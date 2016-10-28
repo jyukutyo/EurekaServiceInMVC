@@ -46,6 +46,7 @@ public class MyInitializingBean implements InitializingBean {
         while (nextServerInfo == null) {
             try {
                 nextServerInfo = eurekaClient.getNextServerFromEureka(vipAddress, false);
+                System.out.println("vipaddress=" + nextServerInfo.getVIPAddress());
             } catch (Throwable e) {
                 System.out.println("Waiting ... verifying service registration with eureka ...");
 
