@@ -1,8 +1,11 @@
 package com.jyukutyo;
 
+import java.util.Date;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -18,13 +21,16 @@ import org.springframework.web.bind.annotation.RestController;
 @EnableAutoConfiguration
 @RestController
 @EnableEurekaClient
-public class ServiceApplication extends SpringBootServletInitializer {
+public class ServiceApplication {
+
+	private static final Logger logger = LoggerFactory.getLogger(ServiceApplication.class);
 
 	/**
 	 * curl -v -X GET http://localhost:8080/jyukutyo
 	 */
 	@RequestMapping(value = "{name}", method = RequestMethod.GET)
 	ResponseEntity<?> get(@PathVariable String name) {
+		logger.info(new Date().toString());
 		return new ResponseEntity<>(name, HttpStatus.OK);
 	}
 

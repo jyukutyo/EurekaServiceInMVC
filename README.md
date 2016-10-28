@@ -38,7 +38,7 @@ mvn jetty:run -Djetty.http.port=8096 -Deureka.client.props=eureka
 #### Eureka、ribbonでサービスを呼び出す
 `http://localhost:8096/`にアクセスすると、画面にjyukutyoと表示されます。
 Eurekaを通じてサービスに/jyukutyoでアクセスします。そのため、ブラウザの画面にはjyukutyoと表示されます。
-複数サービスを起動している場合ribbonがロードバランシングしているので、サーブレットコンテナのアクセスログを見るとそれぞれのコンテナにアクセスが振り分けられていることがわかります。
+複数サービスを起動している場合ribbonがロードバランシングしているので、サーブレットコンテナのログを見るとそれぞれのコンテナにアクセスが振り分けられていることがわかります。
 
 ## 構造
 サービス、クライアントともSpringの初期化後にEureka Serverに自分を登録しに行きます。
@@ -55,5 +55,5 @@ java -jar target/hystrix-dashboard-0.0.1.BUILD-SNAPSHOT.jar
 ```
 
 #### ダッシュボードを見る
-`http://localhost:7979/`にアクセスする。テキストボックスに`http://localhost:8096/hystrix.stream`と入力し、minitor streamボタンを押す。
-クライアントにアクセス`http://localhost:8096`があるたびに、サービスのメソッドコール数などがダッシュボートに表示される。
+`http://localhost:7979/`にアクセスします。テキストボックスに`http://localhost:8096/hystrix.stream`と入力し、minitor streamボタンを押します。
+クライアントにアクセス`http://localhost:8096`があるたびに、サービスのメソッドコール数などがダッシュボートに表示されます。
